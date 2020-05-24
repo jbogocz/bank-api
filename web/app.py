@@ -125,3 +125,29 @@ def updateDebt(username, balance):
         }
     })
 
+# Add money to user account
+class Add(Resource):
+    def post(self):
+        postedData = request.get_json()
+
+        username = postedData["username"]
+        password = postedData["password"]
+        money = postedData["amount"]
+        # Verify credentials
+        retJson, error = verifyCredentials(username, password)
+        if error:
+            return jsonify(retJson)
+        # Check amout of cash
+        if money<=0:
+            return jsonify(generateReturnDictionary(304, "The money amount entered must be greater than 0"))
+        # Check user cash amout
+        cash = cashWithUser(username)
+        money-= 1 # Transaction fee
+        # Add transaction fee to bank account
+        bank_cash = cashWithUser("BANK")
+        updateAccount("BANK", bank_cash+1)
+        # Add remaining to user
+        updateAccount(username, cash+money)
+
+        return jsonify(generateReturnDictionary(200, "Amount Added Successfully to account"))
+

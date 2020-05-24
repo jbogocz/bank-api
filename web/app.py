@@ -15,8 +15,6 @@ db = client.BankAPI
 users = db['Users']
 
 # Check if user exists in database
-
-
 def UserExist(username):
     # Find query username in MongoDB
     if users.find({'Username': username}).count() == 0:
@@ -25,8 +23,6 @@ def UserExist(username):
         return True
 
 # Register new user, inherit class from Resource
-
-
 class Register(Resource):
     # define POST
     def post(self):
@@ -61,3 +57,17 @@ class Register(Resource):
         }
         return jsonify(retJson)
 
+# Verify user hashed password
+def verify_pw(username, password):
+    # Check if user exists
+    if not UserExist(username):
+        return False
+    # get hashed pass
+    hashed_pw = users.find({
+        'Username': username
+    })[0]['Password']
+    # match hashed passwords user provide vs stored in mongodb
+    if bcrypt.hashpw(password.endcode('utf8'), hashed_pw) == hashed_pw:
+        return True
+    else:
+        return False

@@ -94,3 +94,14 @@ def generateReturnDictionary(status, msg):
     }
     return retJson
 
+# Check user credentials
+def verifyCredentials(username, password):
+    # Check if user exists
+    if not UserExist(username):
+        return generateReturnDictionary(301, 'Invalid Username'), True
+    # Check if password is valid
+    correct_pw = verify_pw(username, password)
+    if not correct_pw:
+        return generateReturnDictionary(302, 'Invalid Password'), True
+    return None, False
+

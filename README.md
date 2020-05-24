@@ -15,9 +15,9 @@ docker-compose up
 
 ```json
 {
-  "username": "username", <!--- BANK, user1, user2 --->
+  "username": "username",  "/* BANK, user1, user2 */"
   "password": "password",
-  "amount": cash amount <!--- user1, user2 deposit cash amount --->
+  "amount": 100 "/* user1, user2 deposit cash amount */"
 }
 ```
 Response:
@@ -31,16 +31,16 @@ Response:
 
 ```json
 {
-  "username": "username", <!--- BANK, user1, user2 --->
+  "username": "username", "/* BANK, user1, user2 */"
   "password": "password",
-  "amount": cash amount <!--- user1, user2 deposit cash amount --->
+  "amount": 100 "/* user1, user2 deposit cash amount */"
 }
 ```
 Response:
 ```json
 {
-  "Debt": debt amount,
-  "Own": cash amount - BANK fee, <!--- user1, user2 deposit cash amount substracted by BANK transaction fee --->
+  "Debt": 100,
+  "Own": 99, "/* user1, user2 deposit cash amount substracted by BANK transaction fee */"
   "Username": "username"
 }
 ```
@@ -48,9 +48,9 @@ Response:
 
 ```json
 {
-  "username": "username", <!--- user1, user2 --->
+  "username": "username", "/* user1, user2 */"
   "password": "password",
-  "amount": add cash amount <!--- user1, user2 cash amount to be added to the username account --->
+  "amount": 100 "/* user1, user2 cash amount to be added to the username account */"
 }
 ```
 Response:
@@ -65,10 +65,10 @@ Response:
 
 ```json
 {
-  "username": "username", <!--- user1, user2--->
+  "username": "username", "/* user1, user2 */"
   "password": "password",
-  "to": "username", <!--- user1, user2 --->
-  "amount": transfer cash amount <!--- user1, user2 cash amount to transfer --->
+  "to": "username", "/* user1, user2 */"
+  "amount": 100 "/* user1, user2 cash amount to transfer */"
 }
 ```
 Response:
@@ -82,10 +82,10 @@ Response:
 
 ```json
 {
-  "username": "username", <!--- user1, user2 --->
+  "username": "username", "/* user1, user2 */"
   "password": "password",
-  "to": "username", <!--- user1, user2 --->
-  "amount": take loan amount <!--- user1, user2 loan to take --->
+  "to": "username", "/* user1, user2 */"
+  "amount": 100 "/* user1, user2 loan to take */"
 }
 ```
 Response:
@@ -99,9 +99,9 @@ Response:
 
 ```json
 {
-  "username": "username", <!--- user1, user2 --->
+  "username": "username", "/* user1, user2 */"
   "password": "password",
-  "amount": pay loan amount <!--- user1, user2 pay loan (cash amount will be substracted from the username account) --->
+  "amount": 100 "/* user1, user2 pay loan (cash amount will be substracted from the username account) */"
 }
 ```
 Response:

@@ -201,10 +201,30 @@ class Balance(Resource):
         # Return json file & emit user id and pass
         retJson = users.find({
             "Username": username
-        },{
-            "Password": 0, #projection
+        }, {
+            "Password": 0,  # projection
             "_id": 0
         })[0]
 
         return jsonify(retJson)
+
+# Add load to the user account
+class TakeLoan(Resource):
+    def post(self):
+        postedData = request.get_json()
+        # Get POSTed data
+        username = postedData["username"]
+        password = postedData["password"]
+        money = postedData["amount"]
+        # Verify credentials
+        retJson, error = verifyCredentials(username, password)
+        if error:
+            return jsonify(retJson)
+        # check user cash, debt and update user cash and increase debt
+        cash = cashWithUser(username)
+        debt = debtWithUser(username)
+        updateAccount(username, cash + money)
+        updateDebt(username, debt + money)
+
+        return jsonify(generateReturnDictionary(200, "Loan Added to Your Account"))
 

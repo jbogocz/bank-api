@@ -86,3 +86,11 @@ def debtWithUser(username):
     })[0]["Debt"]
     return debt
 
+# Generate dictionary for user
+def generateReturnDictionary(status, msg):
+    retJson = {
+        'status': status,
+        'msg': msg
+    }
+    return retJson
+

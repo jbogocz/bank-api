@@ -115,3 +115,13 @@ def updateAccount(username, balance):
         }
     })
 
+# Update user debt balance
+def updateDebt(username, balance):
+    users.update({
+        "Username": username
+    },{
+        "$set":{
+            "Debt": balance
+        }
+    })
+

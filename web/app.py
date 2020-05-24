@@ -105,3 +105,13 @@ def verifyCredentials(username, password):
         return generateReturnDictionary(302, 'Invalid Password'), True
     return None, False
 
+# Update user account balance
+def updateAccount(username, balance):
+    users.update({
+        "Username": username
+    },{
+        "$set":{
+            "Own": balance
+        }
+    })
+

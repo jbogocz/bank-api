@@ -82,7 +82,7 @@ def cashWithUser(username):
 # Check user debt
 def debtWithUser(username):
     debt = users.find({
-        "Username":username
+        "Username": username
     })[0]["Debt"]
     return debt
 
@@ -109,8 +109,8 @@ def verifyCredentials(username, password):
 def updateAccount(username, balance):
     users.update({
         "Username": username
-    },{
-        "$set":{
+    }, {
+        "$set": {
             "Own": balance
         }
     })
@@ -119,8 +119,8 @@ def updateAccount(username, balance):
 def updateDebt(username, balance):
     users.update({
         "Username": username
-    },{
-        "$set":{
+    }, {
+        "$set": {
             "Debt": balance
         }
     })
@@ -129,7 +129,7 @@ def updateDebt(username, balance):
 class Add(Resource):
     def post(self):
         postedData = request.get_json()
-
+        # Get POSTed data
         username = postedData["username"]
         password = postedData["password"]
         money = postedData["amount"]
@@ -138,11 +138,11 @@ class Add(Resource):
         if error:
             return jsonify(retJson)
         # Check amout of cash
-        if money<=0:
+        if money <= 0:
             return jsonify(generateReturnDictionary(304, "The money amount entered must be greater than 0"))
         # Check user cash amout
         cash = cashWithUser(username)
-        money-= 1 # Transaction fee
+        money -= 1  # Transaction fee
         # Add transaction fee to bank account
         bank_cash = cashWithUser("BANK")
         updateAccount("BANK", bank_cash+1)
@@ -150,4 +150,40 @@ class Add(Resource):
         updateAccount(username, cash+money)
 
         return jsonify(generateReturnDictionary(200, "Amount Added Successfully to account"))
+
+# Transfer money between users
+class Transfer(Resource):
+    def post(self):
+        postedData = request.get_json()
+        # Get POSTed data
+        username = postedData["username"]
+        password = postedData["password"]
+        to = postedData["to"]
+        money = postedData["amount"]
+        # Verify credentials
+        retJson, error = verifyCredentials(username, password)
+        if error:
+            return jsonify(retJson)
+        # Check if amout of cash is enough for transfer
+        cash = cashWithUser(username)
+        if cash <= 0:
+            return jsonify(generateReturnDictionary(303, "You are out of money, please Add Cash or take a loan"))
+        if money <= 0:
+            return jsonify(generateReturnDictionary(304, "The money amount entered must be greater than 0"))
+        if not UserExist(to):
+            return jsonify(generateReturnDictionary(301, "Recieved username is invalid"))
+        # Get balance from user, receiver & bank
+        cash_from = cashWithUser(username)
+        cash_to = cashWithUser(to)
+        bank_cash = cashWithUser("BANK")
+        # Update balance of user, receiver & bank
+        updateAccount("BANK", bank_cash+1)
+        updateAccount(to, cash_to+money-1)
+        updateAccount(username, cash_from - money)
+
+        retJson = {
+            "status": 200,
+            "msg": "Amount added successfully to account"
+        }
+        return jsonify(generateReturnDictionary(200, "Amount added successfully to account"))
 

@@ -75,7 +75,14 @@ def verify_pw(username, password):
 # Check user cash amount
 def cashWithUser(username):
     cash = users.find({
-        "Username":username
+        "Username": username
     })[0]["Own"]
     return cash
+
+# Check user debt
+def debtWithUser(username):
+    debt = users.find({
+        "Username":username
+    })[0]["Debt"]
+    return debt
 

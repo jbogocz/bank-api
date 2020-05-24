@@ -7,3 +7,10 @@ import bcrypt
 app = Flask(__name__)
 api = Api(app)
 
+# Connect to the MongoDB client on default port
+client = MongoClient('mongodb://db:27017')
+
+# Define new database
+db = client.BankAPI
+users = db['Users']
+
